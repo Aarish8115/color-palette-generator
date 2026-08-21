@@ -73,16 +73,28 @@ def generate_remaining_roles(
     used_hexes = {primary_row["hex"]}
     used_names = {primary_row["color_name"]}
 
+    # Keep explicit assignments unique and reserve them before generating roles.
+    unique_assigned_roles = {}
+    for role in role_order:
+        if role == "primary" or role not in assigned_roles:
+            continue
+
+        row = assigned_roles[role]
+        if row["hex"] in used_hexes or row["color_name"] in used_names:
+            continue
+
+        unique_assigned_roles[role] = row
+        used_hexes.add(row["hex"])
+        used_names.add(row["color_name"])
+
     for role in role_order:
         if role == "primary":
             result.append(("primary", primary_row))
             continue
 
-        if role in assigned_roles:
-            row = assigned_roles[role]
+        if role in unique_assigned_roles:
+            row = unique_assigned_roles[role]
             result.append((role, row))
-            used_hexes.add(row["hex"])
-            used_names.add(row["color_name"])
             continue
 
         role_rule = palette_rules.get(role)

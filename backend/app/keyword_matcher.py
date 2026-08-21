@@ -1,51 +1,27 @@
-from app.config_rules import KEYWORD_RULES, SYNONYMS
+import re
 
 
-def expand_synonyms(prompt_text: str) -> str:
+def extract_constraints(prompt_text: str, valid_hue_families: set[str]) -> dict:
     """
-    Replaces known synonym words in the prompt with their canonical form,
-    so downstream keyword matching only needs to check for the canonical 
-    word, not every variant.
+    Main entry point for prompt-derived constraints.
+    Only hue_family is extracted, based on dataframe-backed values.
     """
-    text = prompt_text.lower()
-    for canonical, variants in SYNONYMS.items():
-        for variant in variants:
-            if variant in text:
-                text = text.replace(variant, canonical)
-    return text
+    normalized_prompt = prompt_text.strip().lower()
+    prompt_tokens = set(re.findall(r"[a-z0-9]+", normalized_prompt))
 
+    for hue_family in sorted(valid_hue_families, key=len, reverse=True):
+        normalized_hue = hue_family.strip().lower()
+        if not normalized_hue:
+            continue
 
-def match_keywords(normalized_text: str) -> dict:
-    """
-    Checks the normalized prompt text against KEYWORD_RULES. For every 
-    phrase found, merges its filter conditions into one constraints dict.
-    When two rules set the same key, keep the more restrictive value.
-    """
-    constraints = {}
+        if " " in normalized_hue:
+            pattern = rf"\b{re.escape(normalized_hue)}\b"
+            if re.search(pattern, normalized_prompt):
+                return {"hue_family": normalized_hue}
+            continue
 
-    for phrase, rule in KEYWORD_RULES.items():
-        if phrase in normalized_text:
-            for key, value in rule.items():
-                if key not in constraints:
-                    constraints[key] = value
-                else:
-                    # merge conflicting numeric bounds by taking the 
-                    # more restrictive (tighter) constraint
-                    if key.endswith("_max"):
-                        constraints[key] = min(constraints[key], value)
-                    elif key.endswith("_min"):
-                        constraints[key] = max(constraints[key], value)
-                    else:
-                        constraints[key] = value  # categorical, just overwrite
+        if normalized_hue in prompt_tokens:
+            return {"hue_family": normalized_hue}
 
-    return constraints
-
-
-def extract_constraints(prompt_text: str) -> dict:
-    """
-    Main entry point. Expands synonyms, then matches against KEYWORD_RULES,
-    returns the final merged constraints dictionary.
-    """
-    normalized = expand_synonyms(prompt_text)
-    return match_keywords(normalized)
+    return {}
 

@@ -1,0 +1,8 @@
+uvicorn
+fastapi
+sentence-transformers
+numpy
+pandas
+huggingface_hub
+rapidfuzz
+pydantic

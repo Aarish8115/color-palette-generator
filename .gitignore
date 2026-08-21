@@ -16,6 +16,7 @@ dist-ssr
 
 models
 embeddings.npy
+__pycache__
 
 # Editor directories and files
 .vscode/*

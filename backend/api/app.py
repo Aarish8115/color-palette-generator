@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import Literal
+from huggingface_hub import hf_hub_download
 
 from app.data_loader import load_colors
 from app.color_detection import load_lexicon, detect_named_colors
@@ -30,13 +31,25 @@ def home():
     return "hello"
 
 
-# --- Load everything once, at startup ---
+
 df = load_colors()
+
 lexicon, reverse_index = load_lexicon("data/lexicon.pickle")
-model, embeddings = load_ranking_resources(
-    "data/embeddings.npy",
-    r"D:\Projects\Moodboard Generator\Color\backend\models\embedding"
+
+embeddings_path = hf_hub_download(
+    repo_id="aarish8115/color-palette-assets",
+    filename="data/embeddings.npy"
 )
+
+model, embeddings = load_ranking_resources(
+    embeddings_path,
+    "BAAI/bge-small-en-v1.5"
+)
+valid_hue_families = {
+    value.strip().lower()
+    for value in df["hue_family"].dropna().astype(str)
+    if value.strip()
+}
 
 
 class PaletteRequest(BaseModel):
@@ -52,7 +65,7 @@ def generate_palette(request: PaletteRequest):
     num_colors = request.num_colors
 
     color_result = detect_named_colors(prompt, lexicon, reverse_index)
-    constraints = extract_constraints(prompt)
+    constraints = extract_constraints(prompt, valid_hue_families)
     filtered = filter_candidates(df, constraints, color_result["matched_row_ids"])
 
     if filtered.empty:

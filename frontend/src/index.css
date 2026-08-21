@@ -1,1 +1,19 @@
+@import url("https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&display=swap");
 @import "tailwindcss";
+
+.courier {
+  font-family: "Courier Prime", monospace;
+}
+
+.courier * {
+  font-family: "Courier Prime", monospace;
+}
+
+.ant-select-selector,
+.ant-select-selection-item,
+.ant-select-selection-placeholder,
+.ant-select-dropdown,
+.ant-select-item,
+.ant-select-item-option-content {
+  font-family: "Courier Prime", monospace !important;
+}

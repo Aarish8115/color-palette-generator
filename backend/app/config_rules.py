@@ -96,30 +96,6 @@ ROLE_TEMPLATES = {
     6: ["primary", "secondary", "tertiary", "accent", "background", "neutral"],
 }
 
-KEYWORD_RULES = {
-    "minimal":       {"saturation_max": 40},
-    "minimalist":    {"saturation_max": 40},
-    "soft":          {"saturation_max": 50, "lightness_min": 50},
-    "muted":         {"saturation_max": 45},
-    "warm":          {"warmth": "warm"},
-    "cool":          {"warmth": "cool"},
-    "low contrast":  {"contrast_score_max": 20},
-    "high contrast": {"contrast_score_min": 60},
-    "light":         {"lightness_min": 60},
-    "dark":          {"lightness_max": 40},
-    "vibrant":       {"saturation_min": 60},
-    "bold":          {"saturation_min": 55},
-    "brown":         {"hue_family": "brown"},
-    "earthy":        {"hue_family": "brown"},
-}
-
-SYNONYMS = {
-    "minimal": ["minimal", "minimalist", "simple", "clean"],
-    "soft": ["soft", "gentle", "subdued", "muted"],
-    "warm": ["warm", "cozy", "earthy"],
-    "cool": ["cool", "cold", "icy"],
-}
-
 # For each num_colors count, specifies which roles should stay 
 # constrained to the original filters (hue_family, warmth, etc.) 
 # versus which roles are free to move via harmony math alone.
@@ -133,20 +109,20 @@ ROLE_ANCHORING = {
     },
     4: {
         "secondary": True,
-        "tertiary": False,
+        "tertiary": True,
         "accent": False,
     },
     5: {
         "secondary": True,
-        "tertiary": False,
+        "tertiary": True,
         "accent": False,
-        "background": False,
+        "background": True,
     },
     6: {
         "secondary": True,
-        "tertiary": False,
+        "tertiary": True,
         "accent": False,
-        "background": False,
+        "background": True,
         "neutral": False,
     },
 }

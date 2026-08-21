@@ -3,7 +3,7 @@ import pandas as pd
 from sentence_transformers import SentenceTransformer
 
 
-def load_ranking_resources(embeddings_path: str, model_name: str = "models/embedding"):
+def load_ranking_resources(embeddings_path: str, model_name: str = "BAAI/bge-small-en-v1.5"):
     model = SentenceTransformer(model_name)
     embeddings = np.load(embeddings_path)
     return model, embeddings
