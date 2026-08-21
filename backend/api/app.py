@@ -14,6 +14,7 @@ from app.palette_builder import build_palette
 app = FastAPI()
 
 origins = [
+    "https://color-palette-generator-liard-sigma.vercel.app/",
     "http://localhost:5173",
 ]
 

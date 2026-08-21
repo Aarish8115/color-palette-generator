@@ -33,6 +33,8 @@ function App() {
   const [palette, setPalette] = useState([]);
   const [loading, setLoading] = useState(false);
 
+  const API_URL = import.meta.env.BACKEND_API_URL;
+
   useEffect(() => {
     if (response?.palette) {
       setPalette(response.palette);
@@ -57,8 +59,8 @@ function App() {
     //   num_colors: numCols,
     // });
     try {
-      const res = await axios.post("http://127.0.0.1:8000/generate-palette", {
-        prompt: prompt,
+      const res = await axios.post(`${API_URL}/generate-palette`, {
+        prompt,
         palette_type: paletteType,
         num_colors: numCols,
       });
@@ -78,21 +80,47 @@ function App() {
       <div className="h-[30vh] w-4/5 mx-auto">
         <h1 className="pt-6 text-3xl font-semibold flex gap-4 cursor-default">
           <div className="flex">
-            <p className="transition-colors duration-100 ease-out hover:text-red-700">P</p>
-            <p className="transition-colors duration-100 ease-out hover:text-amber-500">r</p>
-            <p className="transition-colors duration-100 ease-out hover:text-sky-400">o</p>
-            <p className="transition-colors duration-100 ease-out hover:text-fuchsia-500">m</p>
-            <p className="transition-colors duration-100 ease-out hover:text-gray-800">p</p>
-            <p className="transition-colors duration-100 ease-out hover:text-blue-400">t</p>
+            <p className="transition-colors duration-100 ease-out hover:text-red-700">
+              P
+            </p>
+            <p className="transition-colors duration-100 ease-out hover:text-amber-500">
+              r
+            </p>
+            <p className="transition-colors duration-100 ease-out hover:text-sky-400">
+              o
+            </p>
+            <p className="transition-colors duration-100 ease-out hover:text-fuchsia-500">
+              m
+            </p>
+            <p className="transition-colors duration-100 ease-out hover:text-gray-800">
+              p
+            </p>
+            <p className="transition-colors duration-100 ease-out hover:text-blue-400">
+              t
+            </p>
           </div>
           <div className="flex">
-            <p className="transition-colors duration-100 ease-out hover:text-pink-600">P</p>
-            <p className="transition-colors duration-100 ease-out hover:text-olive-600">a</p>
-            <p className="transition-colors duration-100 ease-out hover:text-green-600">l</p>
-            <p className="transition-colors duration-100 ease-out hover:text-teal-500">e</p>
-            <p className="transition-colors duration-100 ease-out hover:text-mauve-600">t</p>
-            <p className="transition-colors duration-100 ease-out hover:text-lime-400">t</p>
-            <p className="transition-colors duration-100 ease-out hover:text-yellow-300">e</p>
+            <p className="transition-colors duration-100 ease-out hover:text-pink-600">
+              P
+            </p>
+            <p className="transition-colors duration-100 ease-out hover:text-olive-600">
+              a
+            </p>
+            <p className="transition-colors duration-100 ease-out hover:text-green-600">
+              l
+            </p>
+            <p className="transition-colors duration-100 ease-out hover:text-teal-500">
+              e
+            </p>
+            <p className="transition-colors duration-100 ease-out hover:text-mauve-600">
+              t
+            </p>
+            <p className="transition-colors duration-100 ease-out hover:text-lime-400">
+              t
+            </p>
+            <p className="transition-colors duration-100 ease-out hover:text-yellow-300">
+              e
+            </p>
           </div>
         </h1>
         <div className=" items-center pt-6 mx-auto  flex gap-10">
